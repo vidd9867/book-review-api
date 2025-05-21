@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { Router } from 'express';
-import { BookReviewBLL } from '../bll/book-review.bll';
+import { BookBLL } from '../bll/book.bll';
 import { authenticateJWT } from '../utils/authentication';
+import { ReviewBLL } from '../bll/review.bll';
 
 const router = Router();
 
@@ -25,7 +26,7 @@ router.put('/:id', async (req: Request, res: Response) => {
             return;
         }
 
-        const updatedReview = await new BookReviewBLL().updateBookReview(id, userId, review, rating);
+        const updatedReview = await new ReviewBLL().updateBookReview(id, userId, review, rating);
 
         if (!updatedReview) {
             res.status(400).send('Failed to update review');
@@ -49,7 +50,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
             return;
         }
 
-        const deletedReview = await new BookReviewBLL().deleteBookReview(id, userId);
+        const deletedReview = await new ReviewBLL().deleteBookReview(id, userId);
 
         if (!deletedReview) {
             res.status(400).send('Failed to delete review');

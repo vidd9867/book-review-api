@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Router } from 'express';
-import { BookReviewBLL } from '../bll/book-review.bll';
+import { BookBLL } from '../bll/book.bll';
 
 
 const router = Router();
@@ -16,7 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
             return;
         }
 
-        const searchedBooks = await new BookReviewBLL().searchBooks(search, page, limit);
+        const searchedBooks = await new BookBLL().searchBooks(search, page, limit);
 
         if (!searchedBooks) {
             res.status(400).send('Failed to search books');

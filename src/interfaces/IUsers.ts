@@ -1,7 +1,7 @@
 export interface IUsers {
   id?: string;
   email: string | null;
-  password: string | null;
+  password?: string | null;
   sessiontoken?: string | null;
   createdAt?: Date | null;
   updated_at?: Date | null;

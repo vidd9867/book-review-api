@@ -1,7 +1,8 @@
 
 import { Request, Response } from 'express';
 import { Router } from 'express';
-import { BookReviewBLL } from '../bll/book-review.bll';
+import { IMessage } from '../interfaces/IMessage';
+import { UserBLL } from '../bll/user.bll';
 
 const router = Router();
 
@@ -14,10 +15,10 @@ router.post('/', async (req: Request, res: Response) => {
         return;
         }
     
-        const loggedUser = await new BookReviewBLL().loginUser(email, password)
+        const loggedUser = await new UserBLL().loginUser(email, password)
 
-        if(loggedUser?.message){
-            res.status(400).send(`${loggedUser?.message}`);
+        if((loggedUser as IMessage)?.message){
+            res.status(400).send(`${(loggedUser as IMessage)?.message}`);
             return;
         }
 

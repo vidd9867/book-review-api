@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "./encrpyt";
-import { BookReviewBLL } from "../bll/book-review.bll";
+import { BookBLL } from "../bll/book.bll";
 
 // This is the middleware function that will be used to protect routes
 export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {

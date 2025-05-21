@@ -1,8 +1,10 @@
 
 import { Request, Response } from 'express';
 import { Router } from 'express';
-import { BookReviewBLL } from '../bll/book-review.bll';
+import { BookBLL } from '../bll/book.bll';
 import { authenticateJWT } from '../utils/authentication';
+import { IMessage } from '../interfaces/IMessage';
+import { ReviewBLL } from '../bll/review.bll';
 
 const router = Router();
 
@@ -15,7 +17,7 @@ router.post('/', async (req: Request, res: Response) => {
             return;
         }
 
-        const createdBook = await new BookReviewBLL().saveBookDetails(title, author, genre, userId);
+        const createdBook = await new BookBLL().saveBookDetails(title, author, genre, userId);
 
         res.status(200).json(createdBook);
 
@@ -33,10 +35,10 @@ router.get('/:id', async (req: Request, res: Response) => {
             return;
         }
 
-        const bookDetails = await new BookReviewBLL().getBookDetailsById(id);
+        const bookDetails = await new ReviewBLL().getBookDetailsById(id);
 
-        if (bookDetails?.message){
-            res.status(400).send(`${bookDetails.message}`);
+        if ((bookDetails as IMessage)?.message){
+            res.status(400).send(`${(bookDetails as IMessage).message}`);
             return;
         }
 
@@ -67,7 +69,7 @@ router.post('/:id/reviews', async (req: Request, res: Response) => {
             return;
         }
 
-        const createdReview = await new BookReviewBLL().saveBookReview(id, review, rating, userId);
+        const createdReview = await new ReviewBLL().saveBookReview(id, review, rating, userId);
 
         res.status(200).json(createdReview);
 
@@ -89,9 +91,9 @@ router.get('/', async (req: Request, res: Response) => {
         if (author) filters.author = author;
         if (genre) filters.genre = genre;
 
-        const bookReviews = await new BookReviewBLL().getAllBooks(filters, page, limit);
+        const bookReviews = await new BookBLL().getAllBooks(filters, page, limit);
 
-        if (!bookReviews){
+        if ((bookReviews as IMessage)?.message){
             res.status(400).send(`No books found`);
             return;
         }

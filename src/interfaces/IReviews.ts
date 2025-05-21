@@ -6,6 +6,7 @@ export interface IReviews {
     createdBy: string | null;
     createdAt?: Date | null;
     updatedAt?: Date | null;
+    avg?: number;
 }
 
 export interface IUpdateReview {
