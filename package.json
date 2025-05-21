@@ -1,0 +1,37 @@
+{
+  "name": "book-review-api",
+  "version": "1.0.0",
+  "description": "A RESTful API using Node.js (with Express) for a basic Book Review System",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx rimraf dist && npm run build && tsc && node dist/app.js",
+    "build": "tsc",
+    "dev": "ts-node-dev src/app.ts",
+    "restart": "npx rimraf dist && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-auto-routes": "^2.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.1",
+    "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typeorm": "^0.3.24",
+    "typeorm-model-generator": "^0.4.6",
+    "typescript": "^5.8.3"
+  }
+}
