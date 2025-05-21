@@ -151,4 +151,89 @@ curl "http://localhost:3000/search?keyword=harry&page=1&limit=5"
 
 ---
 
-Feel free to open issues or contribute!
+## 4. Database Schema
+
+The Book Review API uses a relational database with the following tables:
+
+### users
+
+| Column     | Type         | Constraints                        |
+|------------|--------------|------------------------------------|
+| id         | char(36)     | PRIMARY KEY, uuid() default        |
+| email      | varchar(100) | UNIQUE, nullable                   |
+| password   | varchar(255) | nullable                           |
+| isActive   | tinyint(1)   | default 1                          |
+| createdAt  | datetime     | default CURRENT_TIMESTAMP          |
+| updatedAt  | datetime     | nullable                           |
+
+### books
+
+| Column     | Type         | Constraints                        |
+|------------|--------------|------------------------------------|
+| id         | char(36)     | PRIMARY KEY, uuid() default        |
+| title      | varchar(100) | nullable                           |
+| author     | varchar(100) | nullable                           |
+| genre      | varchar(100) | nullable                           |
+| isActive   | tinyint(1)   | default 1                          |
+| createdBy  | char(36)     | FOREIGN KEY → users(id), nullable  |
+| createdAt  | datetime     | default CURRENT_TIMESTAMP          |
+| updatedAt  | datetime     | nullable                           |
+
+### reviews
+
+| Column     | Type         | Constraints                        |
+|------------|--------------|------------------------------------|
+| id         | char(36)     | PRIMARY KEY, uuid() default        |
+| bookId     | varchar(100) | FOREIGN KEY → books(id), nullable  |
+| review     | varchar(500) | nullable                           |
+| rating     | int          | nullable                           |
+| isActive   | tinyint(1)   | default 1                          |
+| createdBy  | char(36)     | FOREIGN KEY → users(id), nullable  |
+| createdAt  | datetime     | default CURRENT_TIMESTAMP          |
+| updatedAt  | datetime     | nullable                           |
+
+**Relationships:**
+- Each book is created by a user (`books.createdBy → users.id`).
+- Each review is linked to a book (`reviews.bookId → books.id`) and a user (`reviews.createdBy → users.id`).
+
+---
+
+**Book Review System SQL DDL Queries:(MySQL)**
+
+```sql
+CREATE TABLE users (
+  id char(36) NOT NULL PRIMARY KEY DEFAULT (uuid()),
+  email varchar(100) DEFAULT NULL,
+  password varchar(255) DEFAULT NULL,
+  isActive tinyint(1) DEFAULT 1,
+  createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+  updatedAt datetime DEFAULT NULL
+);
+
+CREATE TABLE books (
+  id char(36) NOT NULL PRIMARY KEY DEFAULT (uuid()),
+  title varchar(100) DEFAULT NULL,
+  author varchar(100) DEFAULT NULL,
+  genre varchar(100) DEFAULT NULL,
+  isActive tinyint(1) DEFAULT 1,
+  createdBy char(36) DEFAULT NULL,
+  createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+  updatedAt datetime DEFAULT NULL,
+  FOREIGN KEY (createdBy) REFERENCES users(id)
+);
+
+CREATE TABLE reviews (
+  id char(36) NOT NULL PRIMARY KEY DEFAULT (uuid()),
+  bookId varchar(100) DEFAULT NULL,
+  review varchar(500) DEFAULT NULL,
+  rating int DEFAULT NULL,
+  isActive tinyint(1) DEFAULT 1,
+  createdBy char(36) DEFAULT NULL,
+  createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+  updatedAt datetime DEFAULT NULL,
+  FOREIGN KEY (bookId) REFERENCES books(id),
+  FOREIGN KEY (createdBy) REFERENCES users(id)
+);
+```
+
+---
