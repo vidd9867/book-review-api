@@ -59,12 +59,12 @@ The API will be available at `http://localhost:3000/` (or your configured port).
 
 ## 3. Example API Requests
 
-### Register a User
+### SignUp a User
 
 ```sh
 curl -X POST http://localhost:3000/signup \
   -H "Content-Type: application/json" \
-  -d '{"username":"alice","email":"alice@example.com","password":"password123"}'
+  -d '{"email":"alice@example.com","password":"password123"}'
 ```
 
 ### Login
@@ -75,19 +75,28 @@ curl -X POST http://localhost:3000/login \
   -d '{"email":"alice@example.com","password":"password123"}'
 ```
 
-### Get All Books (with pagination and filters)
+### Add a New Book  (Authenticated users only)
+
+```sh
+curl -X POST http://localhost:3000/books/<bookId>/reviews \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{"review":"Great book!","rating":8.5}'
+```
+
+### Get All Books (with pagination and optional filters by author and genre)
 
 ```sh
 curl "http://localhost:3000/books?page=1&limit=10&author=Rowling&genre=Fantasy"
 ```
 
-### Get Book Details by ID (with average rating and paginated reviews)
+### Get Book Details by ID  Get book details by ID, including: Average rating and Reviews (with pagination)
 
 ```sh
 curl "http://localhost:3000/books/<bookId>?page=1&limit=5"
 ```
 
-### Submit a Review (authenticated, one per user per book)
+### Submit a Review (Authenticated users only, one review per user per book)
 
 ```sh
 curl -X POST http://localhost:3000/books/<bookId>/reviews \
@@ -103,6 +112,13 @@ curl -X PUT http://localhost:3000/reviews/<reviewId> \
   -H "Authorization: Bearer <your_jwt_token>" \
   -H "Content-Type: application/json" \
   -d '{"review":"Updated review text","rating":9.0}'
+```
+
+### Delete Your Review
+```sh
+curl -X DELETE http://localhost:3000/reviews/<reviewId> \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -H "Content-Type: application/json" 
 ```
 
 ### Search Books by Title or Author (pagination is optional here)
